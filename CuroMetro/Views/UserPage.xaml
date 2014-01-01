@@ -1,0 +1,152 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="CrouMetro.Views.UserPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot contains the root grid where all other page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <phone:Panorama Title="{Binding Name}">
+
+            <!--Panorama item one-->
+            <phone:PanoramaItem Header="情報">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding ProfileImage}" x:Name="userProfileImage" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Padding="15,0,0,0" FontSize="40" Text="{Binding ScreenName}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="40" Text="ささやき:" />
+                        <TextBlock Padding="15,0,0,0" FontSize="40" Text="{Binding StatusCount}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="40" Text="フォロワー:" />
+                        <TextBlock Padding="15,0,0,0" FontSize="40" Text="{Binding FollowersCount}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="40" Text="フォロー:" />
+                        <TextBlock Padding="15,0,0,0" FontSize="40" Text="{Binding FriendsCount}" />
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" x:Name="UserIsFollowing" FontSize="40" Text="" />
+                </StackPanel>
+            </phone:PanoramaItem>
+
+            <!--Panorama item two-->
+            <phone:PanoramaItem Header="紹介">
+                <ScrollViewer>
+                    <TextBlock TextWrapping="Wrap" FontSize="30" Text="{Binding Description}" />
+                </ScrollViewer>
+            </phone:PanoramaItem>
+
+            <phone:PanoramaItem Header="ささやき">
+                <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="userTimeLine" Margin="0,0,-22,0"
+                                        ItemsSource="{Binding PostCollection }">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="100" Height="100">
+                                    <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
+                                           AutomationProperties.Name="{Binding Title}" />
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding Post}" TextWrapping="Wrap" Width="300" />
+                                    <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                    <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"
+                                               MaxHeight="40" />
+                                    <TextBlock Text="{Binding HasMedia}" FontSize="10" TextWrapping="Wrap"
+                                               MaxHeight="40" Foreground="#FFF1FB22" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+            <phone:PanoramaItem Header="フォロー">
+                <phone:LongListSelector GridCellSize="90,90" x:Name="followerList"
+                                        ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Width="100" Height="100">
+                                    <Image Source="{Binding ProfileImage}" Stretch="UniformToFill" />
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding Name}" FontSize="15" TextWrapping="Wrap" Width="300" />
+                                    <TextBlock Text="{Binding ScreenName}" TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+            <phone:PanoramaItem Header="フォロワー">
+                <phone:LongListSelector GridCellSize="90,90" x:Name="followingList"
+                                        ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Width="100" Height="100">
+                                    <Image Source="{Binding ProfileImage}" Stretch="UniformToFill" />
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding Name}" FontSize="15" TextWrapping="Wrap" Width="300" />
+                                    <TextBlock Text="{Binding ScreenName}" TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+            <phone:PanoramaItem Header="アルバム">
+                <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90"
+                                        x:Name="albumGallery" ItemsSource="{Binding MediaCollection }"
+                                        Margin="0,0,-22,0">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Image x:Name="albumImage" Source="{Binding ImageUrl}" />
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+        </phone:Panorama>
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IsEnabled="False" x:Name="FollowButton" Click="FollowButton_Click"
+                                            IconUri="/Assets/AppBar/add.png" Text="フォロー" />
+            <shell:ApplicationBarIconButton IsEnabled="False" x:Name="UnfollowButton" Click="UnfollowButton_Click"
+                                            IconUri="/Assets/AppBar/minus.png" Text="フォロー解除" />
+            <shell:ApplicationBarIconButton IsEnabled="True" x:Name="ReplyButton" Click="ReplyButton_Click"
+                                            IconUri="/Assets/AppBar/next.png" Text="返信" />
+            <shell:ApplicationBarIconButton IsEnabled="False" x:Name="SecretMailButton" Click="SecretMailButton_Click"
+                                            IconUri="/Assets/AppBar/feature.email.png" Text="シークレットメール" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>

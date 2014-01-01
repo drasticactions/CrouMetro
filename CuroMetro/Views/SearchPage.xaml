@@ -1,0 +1,99 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="CrouMetro.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Pivot Control-->
+        <phone:Pivot>
+            <!--Pivot item one-->
+            <phone:PivotItem Header="ささやき検索">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBox x:Name="SearchBox" />
+                        <Button Content="検索" Click="SearchVoiceButton_Click" x:Name="SearchVoiceButton" />
+                        <ProgressBar Visibility="Collapsed" x:Name="progressBar" IsIndeterminate="True" />
+                    </StackPanel>
+                    <phone:LongListSelector Grid.Row="1" Tap="voiceList_Tap" GridCellSize="90,90" x:Name="voiceList"
+                                            ItemsSource="{Binding PostCollection }" Margin="0,0,-22,0">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding ReplyQuoteColor}">
+                                    <Grid Margin="6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Width="100" Height="100">
+                                            <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
+                                                   AutomationProperties.Name="{Binding Title}" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Post}" TextWrapping="Wrap" Width="300" />
+                                            <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                            <TextBlock Text="{Binding SpreadBy}" FontSize="15" />
+                                            <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"
+                                                       MaxHeight="40" />
+                                            <TextBlock Text="{Binding HasMedia}" FontSize="10" TextWrapping="Wrap"
+                                                       MaxHeight="40" Foreground="#FFF1FB22" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item two-->
+            <phone:PivotItem Header="ユーザー検索">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBox x:Name="SearchUserBox" />
+                        <Button Content="検索" Click="SearchUserButton_Click" x:Name="SearchUserButton" />
+                    </StackPanel>
+                    <phone:LongListSelector Grid.Row="1" Tap="userList_Tap" GridCellSize="90,90" x:Name="userList"
+                                            ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="100" Height="100">
+                                        <Image Source="{Binding ProfileImage}" Stretch="UniformToFill" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Name}" FontSize="15" TextWrapping="Wrap" Width="300" />
+                                        <TextBlock Text="{Binding ScreenName}" TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </Grid>
+            </phone:PivotItem>
+        </phone:Pivot>
+    </Grid>
+
+</phone:PhoneApplicationPage>
