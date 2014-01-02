@@ -20,7 +20,7 @@
         <phone:Pivot x:Name="TimelinePivot" SelectionChanged="MainTimelinePivot_SelectionChanged" Title="クローメットロ">
             <!--Pivot item one-->
             <phone:PivotItem x:Name="PublicTimeline" Header="PublicTimeline">
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="publicTimeLine"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="publicTimeLine" DataContext="{Binding PublicCollection}"
                                         ItemsSource="{Binding PostCollection, Mode=TwoWay }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -52,7 +52,7 @@
 
             <!--Pivot item two-->
             <phone:PivotItem Header="ホーム">
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="homeTimeLine"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="homeTimeLine" DataContext="{Binding HomeCollection}"
                                         ItemsSource="{Binding PostCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -83,7 +83,7 @@
             </phone:PivotItem>
 
             <phone:PivotItem Header="＠返信">
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="MentionsTimeLine"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="MentionsTimeLine" DataContext="{Binding MentionsCollection}"
                                         ItemsSource="{Binding PostCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -114,7 +114,7 @@
             </phone:PivotItem>
 
             <phone:PivotItem Header="アルバム">
-                <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90"
+                <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90" DataContext="{Binding PictureCollection}"
                                         x:Name="albumGallery" ItemsSource="{Binding MediaCollection }"
                                         Margin="0,0,-22,0">
                     <phone:LongListSelector.ItemTemplate>

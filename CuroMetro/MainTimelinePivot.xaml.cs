@@ -14,6 +14,7 @@ using CrouMetro.Core.Entity;
 using CrouMetro.Core.Managers;
 using CrouMetro.Core.Tools;
 using Microsoft.Phone.Controls;
+using Microsoft.Xna.Framework.Media;
 
 namespace CrouMetro
 {
@@ -132,6 +133,26 @@ namespace CrouMetro
             if (PublicCollection == null)
             {
                 await BindToPublicTimeline(App.userAccountEntity);
+            }
+            else
+            {
+                publicTimeLine.DataContext = PublicCollection;
+                publicTimeLine.ItemRealized += publicTimeLine_ItemRealized;
+            }
+            if (HomeCollection != null)
+            {
+                homeTimeLine.DataContext = HomeCollection;
+                homeTimeLine.ItemRealized += homeTimeLine_ItemRealized;
+            }
+            if (MentionsCollection != null)
+            {
+                MentionsTimeLine.DataContext = MentionsCollection;
+                MentionsTimeLine.ItemRealized += mentionsTimeLine_ItemRealized;
+            }
+            if (PictureCollection != null)
+            {
+                albumGallery.DataContext = PictureCollection;
+                albumGallery.ItemRealized += albumGallery_ItemRealized;
             }
             progressBar.Visibility = Visibility.Collapsed;
         }
@@ -258,6 +279,7 @@ namespace CrouMetro
                     publicTimeLine.ScrollTo(PublicCollection.PostCollection.FirstOrDefault());
                     break;
                 case "HomeTimeline":
+                    if (HomeCollection == null) break;
                     post = HomeCollection.PostCollection.FirstOrDefault();
                     List<PostEntity> homeitems =
                         await TimelineManager.GetHomeTimeline(false, post.StatusID, null, null, App.userAccountEntity);
@@ -269,6 +291,7 @@ namespace CrouMetro
                     homeTimeLine.ScrollTo(HomeCollection.PostCollection.FirstOrDefault());
                     break;
                 case "MentionsTimeline":
+                    if (MentionsCollection == null) break;
                     post = MentionsCollection.PostCollection.FirstOrDefault();
                     List<PostEntity> mentionitems =
                         await TimelineManager.GetMentions(false, null, null, null, App.userAccountEntity);

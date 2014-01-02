@@ -62,12 +62,14 @@ namespace CrouMetro.Views
 
         public async Task<bool> BindToUserTimeline(UserAccountEntity userAccountEntry)
         {
-            userCollection = new InfiniteScrollingCollection();
-            userCollection.timeline = EndPoints.USER_TIMELINE;
-            userCollection.PostCollection = new ObservableCollection<PostEntity>();
-            userCollection.userAccountEntity = userAccountEntry;
-            userCollection.userName = App.ViewModel.SelectedUser.ScreenName;
-            userCollection.UserId = App.ViewModel.SelectedUser.UserID;
+            userCollection = new InfiniteScrollingCollection
+            {
+                timeline = EndPoints.USER_TIMELINE,
+                PostCollection = new ObservableCollection<PostEntity>(),
+                userAccountEntity = userAccountEntry,
+                userName = App.ViewModel.SelectedUser.ScreenName,
+                UserId = App.ViewModel.SelectedUser.UserID
+            };
             List<PostEntity> items =
                 await
                     TimelineManager.GetUserTimeline(App.ViewModel.SelectedUser.ScreenName,
@@ -104,19 +106,21 @@ namespace CrouMetro.Views
 
         public async Task<bool> BindToUserFollowerGallery(UserAccountEntity userAccountEntity)
         {
-            userFollowerCollection = new InfiniteScrollingUserCollection();
-            userFollowerCollection.timeline = "Follower";
-            userFollowerCollection.userId = App.ViewModel.SelectedUser.UserID;
-            userFollowerCollection.Offset = 0;
-            userFollowerCollection.userAccountEntity = userAccountEntity;
-            userFollowerCollection.UserCollection = new ObservableCollection<UserEntity>();
+            userFollowerCollection = new InfiniteScrollingUserCollection
+            {
+                timeline = "Follower",
+                userId = App.ViewModel.SelectedUser.UserID,
+                Offset = -1,
+                userAccountEntity = userAccountEntity,
+                UserCollection = new ObservableCollection<UserEntity>()
+            };
             List<UserEntity> items =
                 await UserManager.LookupFollowerUsers(0, App.ViewModel.SelectedUser.UserID, userAccountEntity);
             foreach (UserEntity item in items)
             {
                 userFollowerCollection.UserCollection.Add(item);
             }
-            userFollowerCollection.Offset = 1;
+            userFollowerCollection.Offset = 0;
             followerList.DataContext = userFollowerCollection;
             followerList.ItemRealized += followerTimeline_ItemRealized;
             return true;
@@ -124,12 +128,14 @@ namespace CrouMetro.Views
 
         public async Task<bool> BindToUserFollowingGallery(UserAccountEntity userAccountEntity)
         {
-            userFollowingCollection = new InfiniteScrollingUserCollection();
-            userFollowingCollection.timeline = "Following";
-            userFollowingCollection.userId = App.ViewModel.SelectedUser.UserID;
-            userFollowingCollection.Offset = -1;
-            userFollowingCollection.userAccountEntity = userAccountEntity;
-            userFollowingCollection.UserCollection = new ObservableCollection<UserEntity>();
+            userFollowingCollection = new InfiniteScrollingUserCollection
+            {
+                timeline = "Following",
+                userId = App.ViewModel.SelectedUser.UserID,
+                Offset = -1,
+                userAccountEntity = userAccountEntity,
+                UserCollection = new ObservableCollection<UserEntity>()
+            };
             List<UserEntity> items =
                 await UserManager.LookupFollowingUsers(0, App.ViewModel.SelectedUser.UserID, userAccountEntity);
             foreach (UserEntity item in items)
@@ -144,117 +150,97 @@ namespace CrouMetro.Views
 
         private void albumGallery_ItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            if (!pictureCollection.IsLoading && albumGallery.ItemsSource != null &&
-                albumGallery.ItemsSource.Count >= _offsetKnob)
+            if (pictureCollection.IsLoading || albumGallery.ItemsSource == null ||
+                albumGallery.ItemsSource.Count < _offsetKnob) return;
+            if (e.ItemKind != LongListSelectorItemKind.Item) return;
+            var mediaEntity = e.Container.Content as MediaEntity;
+            if (
+                mediaEntity != null && mediaEntity.Equals(
+                    albumGallery.ItemsSource[albumGallery.ItemsSource.Count - _offsetKnob]))
             {
-                if (e.ItemKind == LongListSelectorItemKind.Item)
-                {
-                    if (
-                        (e.Container.Content as MediaEntity).Equals(
-                            albumGallery.ItemsSource[albumGallery.ItemsSource.Count - _offsetKnob]))
-                    {
-                        pictureCollection.LoadAlbum();
-                    }
-                }
+                pictureCollection.LoadAlbum();
             }
         }
 
         private void followerTimeline_ItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            if (!userFollowerCollection.IsLoading && followerList.ItemsSource != null &&
-                followerList.ItemsSource.Count >= _postOffsetKnob)
+            if (userFollowerCollection.IsLoading || followerList.ItemsSource == null ||
+                followerList.ItemsSource.Count < _postOffsetKnob) return;
+            if (e.ItemKind != LongListSelectorItemKind.Item) return;
+            var userEntity = e.Container.Content as UserEntity;
+            if (
+                userEntity != null && userEntity.Equals(
+                    followerList.ItemsSource[followerList.ItemsSource.Count - _postOffsetKnob]))
             {
-                if (e.ItemKind == LongListSelectorItemKind.Item)
-                {
-                    if (
-                        (e.Container.Content as UserEntity).Equals(
-                            followerList.ItemsSource[followerList.ItemsSource.Count - _postOffsetKnob]))
-                    {
-                        userFollowerCollection.LoadUserFollowerFollowingList();
-                    }
-                }
+                userFollowerCollection.LoadUserFollowerFollowingList();
             }
         }
 
         private void followingTimeline_ItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            if (!userFollowingCollection.IsLoading && followingList.ItemsSource != null &&
-                followingList.ItemsSource.Count >= _postOffsetKnob)
+            if (userFollowingCollection.IsLoading || followingList.ItemsSource == null ||
+                followingList.ItemsSource.Count < _postOffsetKnob) return;
+            if (e.ItemKind != LongListSelectorItemKind.Item) return;
+            var userEntity = e.Container.Content as UserEntity;
+            if (
+                userEntity != null && userEntity.Equals(
+                    followingList.ItemsSource[followingList.ItemsSource.Count - _postOffsetKnob]))
             {
-                if (e.ItemKind == LongListSelectorItemKind.Item)
-                {
-                    if (
-                        (e.Container.Content as UserEntity).Equals(
-                            followingList.ItemsSource[followingList.ItemsSource.Count - _postOffsetKnob]))
-                    {
-                        userFollowingCollection.LoadUserFollowerFollowingList();
-                    }
-                }
+                userFollowingCollection.LoadUserFollowerFollowingList();
             }
         }
 
         private void userTimeLine_ItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            if (!userCollection.IsLoading && userTimeLine.ItemsSource != null &&
-                userTimeLine.ItemsSource.Count >= _postOffsetKnob)
+            if (userCollection.IsLoading || userTimeLine.ItemsSource == null ||
+                userTimeLine.ItemsSource.Count < _postOffsetKnob) return;
+            if (e.ItemKind != LongListSelectorItemKind.Item) return;
+            var postEntity = e.Container.Content as PostEntity;
+            if (
+                postEntity != null && postEntity.Equals(
+                    userTimeLine.ItemsSource[userTimeLine.ItemsSource.Count - _postOffsetKnob]))
             {
-                if (e.ItemKind == LongListSelectorItemKind.Item)
-                {
-                    if (
-                        (e.Container.Content as PostEntity).Equals(
-                            userTimeLine.ItemsSource[userTimeLine.ItemsSource.Count - _postOffsetKnob]))
-                    {
-                        userCollection.LoadPosts(EndPoints.USER_TIMELINE);
-                    }
-                }
+                userCollection.LoadPosts(EndPoints.USER_TIMELINE);
             }
         }
 
         private void timeLine_Tap(object sender, GestureEventArgs e)
         {
             var post = ((FrameworkElement) e.OriginalSource).DataContext as PostEntity;
-            if (post != null)
-            {
-                App.ViewModel.SelectedPost = post;
-                NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
-            }
+            if (post == null) return;
+            App.ViewModel.SelectedPost = post;
+            NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
         }
 
         private async void albumGallery_Tap(object sender, GestureEventArgs e)
         {
             var mediaEntity = ((FrameworkElement) e.OriginalSource).DataContext as MediaEntity;
-            if (mediaEntity != null)
-            {
-                PostEntity post = await StatusManager.GetPost(false, true, mediaEntity.StatusId, App.userAccountEntity);
-                App.ViewModel.SelectedPost = post;
-                NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
-            }
+            if (mediaEntity == null) return;
+            PostEntity post = await StatusManager.GetPost(false, true, mediaEntity.StatusId, App.userAccountEntity);
+            App.ViewModel.SelectedPost = post;
+            NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
         }
 
         private async void FollowButton_Click(object sender, EventArgs e)
         {
             bool result =
                 await FriendshipManager.CreateFriendship(App.ViewModel.SelectedUser.UserID, App.userAccountEntity);
-            if (result)
-            {
-                var followButton = (ApplicationBarIconButton) ApplicationBar.Buttons[0];
-                var unfollowButton = (ApplicationBarIconButton) ApplicationBar.Buttons[1];
-                unfollowButton.IsEnabled = true;
-                followButton.IsEnabled = false;
-            }
+            if (!result) return;
+            var followButton = (ApplicationBarIconButton) ApplicationBar.Buttons[0];
+            var unfollowButton = (ApplicationBarIconButton) ApplicationBar.Buttons[1];
+            unfollowButton.IsEnabled = true;
+            followButton.IsEnabled = false;
         }
 
         private async void UnfollowButton_Click(object sender, EventArgs e)
         {
             bool result =
                 await FriendshipManager.DestroyFriendship(App.ViewModel.SelectedUser.UserID, App.userAccountEntity);
-            if (result)
-            {
-                var followButton = (ApplicationBarIconButton) ApplicationBar.Buttons[0];
-                var unfollowButton = (ApplicationBarIconButton) ApplicationBar.Buttons[1];
-                unfollowButton.IsEnabled = false;
-                followButton.IsEnabled = true;
-            }
+            if (!result) return;
+            var followButton = (ApplicationBarIconButton) ApplicationBar.Buttons[0];
+            var unfollowButton = (ApplicationBarIconButton) ApplicationBar.Buttons[1];
+            unfollowButton.IsEnabled = false;
+            followButton.IsEnabled = true;
         }
 
         private void ReplyButton_Click(object sender, EventArgs e)

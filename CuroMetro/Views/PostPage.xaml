@@ -51,7 +51,7 @@
             <shell:ApplicationBarIconButton IsEnabled="False" x:Name="ReplyButton" Click="Reply_Click"
                                             IconUri="/Assets/AppBar/upload.png" Text="返信" />
             <shell:ApplicationBarIconButton IsEnabled="False" x:Name="FavoriteButton" Click="Favorite_Click"
-                                            IconUri="/Assets/AppBar/like.png" Text="お気に入り" />
+                                            IconUri="/Assets/AppBar/like.png" Text="イイネ！" />
             <shell:ApplicationBarIconButton IsEnabled="False" x:Name="SpreadButton" Click="Spread_Click"
                                             IconUri="/Assets/AppBar/share.png" Text="シェア" />
             <shell:ApplicationBarIconButton IsEnabled="False" x:Name="RemoveButton" Click="RemoveButton_Click"

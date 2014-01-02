@@ -51,28 +51,31 @@
 
             <phone:PanoramaItem Header="ささやき">
                 <!--Double line list with image placeholder and text wrapping using a floating header that scrolls with the content-->
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="userTimeLine" Margin="0,0,-22,0"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="userTimeLine"
                                         ItemsSource="{Binding PostCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Width="100" Height="100">
-                                    <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
-                                           AutomationProperties.Name="{Binding Title}" />
-                                </Border>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                    <TextBlock Text="{Binding Post}" TextWrapping="Wrap" Width="300" />
-                                    <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                    <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"
-                                               MaxHeight="40" />
-                                    <TextBlock Text="{Binding HasMedia}" FontSize="10" TextWrapping="Wrap"
-                                               MaxHeight="40" Foreground="#FFF1FB22" />
-                                </StackPanel>
-                            </Grid>
+                            <Border Background="{Binding Converter={StaticResource PostBorderConverter}}">
+                                <Grid Margin="6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border VerticalAlignment="Top" Grid.Column="0" Width="100" Height="100">
+                                        <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
+                                               AutomationProperties.Name="{Binding Title}" />
+                                    </Border>
+
+                                    <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
+                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
+                                        <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
+                                        <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
