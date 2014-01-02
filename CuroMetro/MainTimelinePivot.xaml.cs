@@ -43,6 +43,7 @@ namespace CrouMetro
 
         public async Task<bool> BindToPublicTimeline(UserAccountEntity userAccountEntry)
         {
+            progressBar.Visibility = Visibility.Visible;
             PublicCollection = new InfiniteScrollingCollection
             {
                 timeline = EndPoints.PUBLIC_TIMELINE,
@@ -58,6 +59,7 @@ namespace CrouMetro
             PublicCollection.MaxStatusId = items.Last().StatusID;
             publicTimeLine.DataContext = PublicCollection;
             publicTimeLine.ItemRealized += publicTimeLine_ItemRealized;
+            progressBar.Visibility = Visibility.Collapsed;
             return true;
         }
 
@@ -244,6 +246,7 @@ namespace CrouMetro
             switch (_selectedIndex)
             {
                 case "PublicTimeline":
+                    if (PublicCollection == null) break;
                     post = PublicCollection.PostCollection.FirstOrDefault();
                     List<PostEntity> items =
                         await TimelineManager.GetPublicTimeline(false, post.StatusID, null, null, App.userAccountEntity);

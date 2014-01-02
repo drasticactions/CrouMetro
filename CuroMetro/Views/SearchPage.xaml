@@ -30,27 +30,27 @@
                         <ProgressBar Visibility="Collapsed" x:Name="progressBar" IsIndeterminate="True" />
                     </StackPanel>
                     <phone:LongListSelector Grid.Row="1" Tap="voiceList_Tap" GridCellSize="90,90" x:Name="voiceList"
-                                            ItemsSource="{Binding PostCollection }" Margin="0,0,-22,0">
+                                            ItemsSource="{Binding PostCollection }">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{Binding ReplyQuoteColor}">
+                                <Border Background="{Binding Converter={StaticResource PostBorderConverter}}">
                                     <Grid Margin="6">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Border Grid.Column="0" Width="100" Height="100">
+                                        <Border VerticalAlignment="Top" Grid.Column="0" Width="100" Height="100">
                                             <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
-                                                   AutomationProperties.Name="{Binding Title}" />
+                                               AutomationProperties.Name="{Binding Title}" />
                                         </Border>
-                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                            <TextBlock Text="{Binding Post}" TextWrapping="Wrap" Width="300" />
+
+                                        <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                             <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                            <TextBlock Text="{Binding SpreadBy}" FontSize="15" />
-                                            <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"
-                                                       MaxHeight="40" />
-                                            <TextBlock Text="{Binding HasMedia}" FontSize="10" TextWrapping="Wrap"
-                                                       MaxHeight="40" Foreground="#FFF1FB22" />
+                                            <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
+                                            <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
+                                            <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
+                                            <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -72,19 +72,19 @@
                         <Button Content="検索" Click="SearchUserButton_Click" x:Name="SearchUserButton" />
                     </StackPanel>
                     <phone:LongListSelector Grid.Row="1" Tap="userList_Tap" GridCellSize="90,90" x:Name="userList"
-                                            ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                                            ItemsSource="{Binding UserCollection }">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="6">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Border Width="100" Height="100">
                                         <Image Source="{Binding ProfileImage}" Stretch="UniformToFill" />
                                     </Border>
                                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                        <TextBlock Text="{Binding Name}" FontSize="15" TextWrapping="Wrap" Width="300" />
+                                        <TextBlock Text="{Binding Name}" FontSize="15" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding ScreenName}" TextWrapping="NoWrap" />
                                     </StackPanel>
                                 </Grid>

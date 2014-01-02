@@ -63,11 +63,11 @@ namespace CrouMetro.Core.Managers
             }
             if (trim)
             {
-                paramer += "&trim_user=" + trim;
+                paramer += "&trim_user=" + true;
             }
             if (entities)
             {
-                paramer += "&include_entities=" + entities;
+                paramer += "&include_entities=" + true;
             }
             var param = new Dictionary<String, String>();
             //param.Add("cursor", "-1");
@@ -82,7 +82,8 @@ namespace CrouMetro.Core.Managers
             responseContent = "[" + responseContent + "]";
             JArray a = JArray.Parse(responseContent);
             var b = (JObject) a[0];
-            return SearchEntity.ParseStatuses(b["statuses"].ToString(), b["serach_metadata"].ToString(),
+            if (b["statuses"] == null || b["search_metadata"] == null) return null;
+            return SearchEntity.ParseStatuses(b["statuses"].ToString(), b["search_metadata"].ToString(),
                 userAccountEntity);
         }
     }

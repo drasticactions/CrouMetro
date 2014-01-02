@@ -78,58 +78,46 @@ namespace CrouMetro.Views
 
         private async void SearchVoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            BindToSearchTimeline(App.userAccountEntity);
+            await BindToSearchTimeline(App.userAccountEntity);
         }
 
         private void voiceList_ItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            if (!searchVoiceCollection.IsLoading && voiceList.ItemsSource != null &&
-                voiceList.ItemsSource.Count >= _offsetKnob)
+            if (searchVoiceCollection.IsLoading || voiceList.ItemsSource == null ||
+                voiceList.ItemsSource.Count < _offsetKnob) return;
+            if (e.ItemKind != LongListSelectorItemKind.Item) return;
+            var postEntity = e.Container.Content as PostEntity;
+            if (
+                postEntity != null && postEntity.Equals(
+                    voiceList.ItemsSource[voiceList.ItemsSource.Count - _offsetKnob]))
             {
-                if (e.ItemKind == LongListSelectorItemKind.Item)
-                {
-                    if (
-                        (e.Container.Content as PostEntity).Equals(
-                            voiceList.ItemsSource[voiceList.ItemsSource.Count - _offsetKnob]))
-                    {
-                        //progressBar.Visibility = System.Windows.Visibility.Visible;
-                        searchVoiceCollection.LoadSearchResults();
-                        //progressBar.Visibility = System.Windows.Visibility.Collapsed;
-                    }
-                }
+                //progressBar.Visibility = System.Windows.Visibility.Visible;
+                searchVoiceCollection.LoadSearchResults();
+                //progressBar.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
-        private void SearchUserButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchUserButton_Click(object sender, RoutedEventArgs e)
         {
-            BindToUserTimeline(App.userAccountEntity);
+            await BindToUserTimeline(App.userAccountEntity);
         }
 
         private void userList_Tap(object sender, GestureEventArgs e)
         {
             var user = ((FrameworkElement) e.OriginalSource).DataContext as UserEntity;
-            if (user != null)
-            {
-                App.ViewModel.SelectedUser = user;
-                NavigationService.Navigate(new Uri("/Views/UserPage.xaml", UriKind.Relative));
-            }
+            if (user == null) return;
+            App.ViewModel.SelectedUser = user;
+            NavigationService.Navigate(new Uri("/Views/UserPage.xaml", UriKind.Relative));
         }
 
         private void voiceList_Tap(object sender, GestureEventArgs e)
         {
             var post = ((FrameworkElement) e.OriginalSource).DataContext as PostEntity;
-            if (post != null)
-            {
-                App.ViewModel.SelectedPost = post;
-                if (post.InReplyToUserID > 0)
-                {
-                    NavigationService.Navigate(new Uri("/Views/ConversationView.xaml", UriKind.Relative));
-                }
-                else
-                {
-                    NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
-                }
-            }
+            if (post == null) return;
+            App.ViewModel.SelectedPost = post;
+            NavigationService.Navigate(post.InReplyToUserID > 0
+                ? new Uri("/Views/ConversationView.xaml", UriKind.Relative)
+                : new Uri("/Views/PostPage.xaml", UriKind.Relative));
         }
     }
 }

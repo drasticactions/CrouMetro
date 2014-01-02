@@ -33,16 +33,16 @@ namespace CrouMetro.Core.Entity
             JObject searchMeta = JObject.Parse(searchMetaData);
             var searchEntity = new SearchEntity
             {
-                PostList = PostEntity.Parse(statuses.ToString(), userAccountEntity),
-                CompletedIn = (Decimal) searchMeta["completed_in"],
-                MaxId = long.Parse((String) searchMeta["max_id"]),
-                MaxIdStr = (String) searchMeta["max_id_str"],
-                SinceId = long.Parse((String) searchMeta["since_id"]),
-                SinceIdStr = (String) searchMeta["since_id_str"],
-                Count = (int) searchMeta["count"],
-                NextResults = (String) searchMeta["next_results"],
-                RefreshUrl = (String) searchMeta["refresh_url"],
-                Query = (String) searchMeta["query"]
+                PostList = statuses != null ? PostEntity.Parse(statuses.ToString(), userAccountEntity) : null,
+                CompletedIn = searchMeta["completed_in"] != null ? (Decimal) searchMeta["completed_in"] : 0,
+                MaxId = searchMeta["max_id"] != null ? long.Parse((String) searchMeta["max_id"]) : 0,
+                MaxIdStr = searchMeta["max_id_str"] != null ? (String) searchMeta["max_id_str"] : string.Empty,
+                SinceId = searchMeta["since_id"] != null ? long.Parse((String) searchMeta["since_id"]) : 0,
+                SinceIdStr = searchMeta["since_id_str"] != null ? (String) searchMeta["since_id_str"] : string.Empty,
+                Count = searchMeta["count"] != null ? (int) searchMeta["count"] : 0,
+                NextResults = searchMeta["next_results"] != null ? (String) searchMeta["next_results"] : string.Empty,
+                RefreshUrl = searchMeta["refresh_url"] != null ? (String) searchMeta["refresh_url"] : string.Empty,
+                Query = searchMeta["query"] != null ? (String) searchMeta["query"] : string.Empty
             };
             return searchEntity;
         }

@@ -12,7 +12,7 @@
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
         <ProgressBar VerticalAlignment="Top" Visibility="Collapsed" x:Name="progressBar" IsIndeterminate="True" />
         <StackPanel>
-            <TextBox x:Name="StatusUpdateBox" TextWrapping="Wrap" TextChanged="StatusUpdateBox_TextChanged"
+            <TextBox x:Name="StatusUpdateBox" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="StatusUpdateBox_TextChanged"
                      Height="200" />
             <TextBlock x:Name="StatusTextCount" Padding="15,0,0,0" TextWrapping="Wrap" Text="0\372"
                        VerticalAlignment="Top" FontSize="20" />

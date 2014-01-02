@@ -29,7 +29,9 @@ namespace CrouMetro.Core.Entity
 
         public long InReplyToStatusID { private set; get; }
 
-        public string HasMedia { private set; get; }
+        public string HasMediaString { private set; get; }
+
+        public bool HasMedia { private set; get; }
 
         public long InReplyToUserID { private set; get; }
 
@@ -133,7 +135,8 @@ namespace CrouMetro.Core.Entity
                 {
                     if (Post.Media.Equals("photo"))
                     {
-                        Post.HasMedia = "画像 ";
+                        Post.HasMediaString = "画像 ";
+                        Post.HasMedia = true;
                     }
                 }
                 if (Post.SpreadStatus != null)

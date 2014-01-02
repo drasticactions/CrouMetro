@@ -18,6 +18,7 @@
             <Setter Property="CharacterSpacing" Value="-35" />
         </Style>
         <tools:PostBorderConverter x:Key="PostBorderConverter" />
+        <tools:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
