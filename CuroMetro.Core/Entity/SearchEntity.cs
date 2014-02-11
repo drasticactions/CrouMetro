@@ -26,14 +26,15 @@ namespace CrouMetro.Core.Entity
 
         public List<PostEntity> PostList { private set; get; }
 
-        public static SearchEntity ParseStatuses(string Statuses, string searchMetaData,
+        public static SearchEntity ParseStatuses(string statuses, string searchMetaData,
             UserAccountEntity userAccountEntity)
         {
-            JArray statuses = JArray.Parse(Statuses);
+            if (statuses == null) throw new ArgumentNullException("statuses");
+            JArray statusList = JArray.Parse(statuses);
             JObject searchMeta = JObject.Parse(searchMetaData);
             var searchEntity = new SearchEntity
             {
-                PostList = statuses != null ? PostEntity.Parse(statuses.ToString(), userAccountEntity) : null,
+                PostList = statusList != null ? PostEntity.Parse(statusList.ToString(), userAccountEntity) : null,
                 CompletedIn = searchMeta["completed_in"] != null ? (Decimal) searchMeta["completed_in"] : 0,
                 MaxId = searchMeta["max_id"] != null ? long.Parse((String) searchMeta["max_id"]) : 0,
                 MaxIdStr = searchMeta["max_id_str"] != null ? (String) searchMeta["max_id_str"] : string.Empty,

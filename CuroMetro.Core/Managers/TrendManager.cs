@@ -16,7 +16,6 @@ namespace CrouMetro.Core.Managers
         public static async Task<TrendPlaceEntity> GetTrends(int woeId,
             UserAccountEntity userAccountEntity)
         {
-            var trendPlaceEntity = new TrendPlaceEntity();
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
                 await Auth.RefreshAccessToken(userAccountEntity);
@@ -24,9 +23,16 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, string.Format(EndPoints.TrendsPlace, woeId));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return TrendPlaceEntity.Parse(responseContent);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return TrendPlaceEntity.Parse(responseContent);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

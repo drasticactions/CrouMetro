@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace CrouMetro.Core.Managers
             {
                 await Auth.RefreshAccessToken(userAccountEntity);
             }
-            string paramer = "?q=" + query;
+            var paramer = "?q=" + query;
             if (count.HasValue)
             {
                 paramer += "&count=" + count.Value;
@@ -29,16 +30,21 @@ namespace CrouMetro.Core.Managers
             }
             if (trim)
             {
-                paramer += "&trim_user=" + trim;
+                paramer += "&trim_user=" + true;
             }
             var theAuthClient = new HttpClient();
-            //if (userId != null) param.Add("user_id", userId.ToString());
             var request = new HttpRequestMessage(HttpMethod.Get, EndPoints.SEARCH_USERS + paramer);
-            //var values = new FormUrlEncodedContent(param);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return UserEntity.ParseUserList(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return UserEntity.ParseUserList(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<SearchEntity> SearchStatusList(string query, long? MaxId, long? SinceId, int? count,
@@ -70,21 +76,24 @@ namespace CrouMetro.Core.Managers
                 paramer += "&include_entities=" + true;
             }
             var param = new Dictionary<String, String>();
-            //param.Add("cursor", "-1");
-            //if (userId != null) param.Add("user_id", userId.ToString());
             var theAuthClient = new HttpClient();
-            //if (userId != null) param.Add("user_id", userId.ToString());
             var request = new HttpRequestMessage(HttpMethod.Get, EndPoints.SEARCH_VOICES + paramer);
-            //var values = new FormUrlEncodedContent(param);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            responseContent = "[" + responseContent + "]";
-            JArray a = JArray.Parse(responseContent);
-            var b = (JObject) a[0];
-            if (b["statuses"] == null || b["search_metadata"] == null) return null;
-            return SearchEntity.ParseStatuses(b["statuses"].ToString(), b["search_metadata"].ToString(),
-                userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                responseContent = "[" + responseContent + "]";
+                JArray a = JArray.Parse(responseContent);
+                var b = (JObject)a[0];
+                if (b["statuses"] == null || b["search_metadata"] == null) return null;
+                return SearchEntity.ParseStatuses(b["statuses"].ToString(), b["search_metadata"].ToString(),
+                    userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

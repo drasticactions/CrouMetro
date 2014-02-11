@@ -14,16 +14,13 @@ namespace CrouMetro.Core.Managers
 {
     public class Auth
     {
-        private const string KEY_TOKENEXIST = "TOKEN_DOES_EXIST";
-        private const string KEY_TOKENVALUE = "TOKEN_VALUE";
-        private static readonly IsolatedStorageSettings appSettings = IsolatedStorageSettings.ApplicationSettings;
+        private static readonly IsolatedStorageSettings AppSettings = IsolatedStorageSettings.ApplicationSettings;
 
         /// <summary>
         ///     新しくアクセストークンを取得します。
         ///     また、Accountオブジェクトを新規に作成します。
         /// </summary>
         /// <param name="code">認可コード</param>
-        /// <param name="account">対象のアカウント</param>
         public static async Task<bool> RequestAccessToken(String code)
         {
             var dic = new Dictionary<String, String>();
@@ -31,38 +28,34 @@ namespace CrouMetro.Core.Managers
             dic["client_id"] = Constants.CONSUMER_KEY;
             dic["client_secret"] = Constants.CONSUMER_SECRET;
             dic["code"] = code;
-            //String response;
 
-            //UserAccountEntity account = null;
             var theAuthClient = new HttpClient();
-            //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, EndPoints.OAUTH_TOKEN);
             HttpContent header = new FormUrlEncodedContent(dic);
             HttpResponseMessage response = await theAuthClient.PostAsync(EndPoints.OAUTH_TOKEN, header);
             string responseContent = await response.Content.ReadAsStringAsync();
-            //Http.HttpPost(EndPoints.OAUTH_TOKEN, dic, ref account, out response);
 
             CroudiaAuthEntity authEntity = CroudiaAuthEntity.Parse(responseContent);
 
 
-            if (!appSettings.Any())
+            if (!AppSettings.Any())
             {
-                appSettings.Add("accessToken", authEntity.AccessToken);
+                AppSettings.Add("accessToken", authEntity.AccessToken);
             }
             else
             {
-                appSettings["accessToken"] = authEntity.AccessToken;
+                AppSettings["accessToken"] = authEntity.AccessToken;
             }
 
-            if (!appSettings.Any())
+            if (!AppSettings.Any())
             {
-                appSettings.Add("refreshToken", authEntity.RefreshToken);
+                AppSettings.Add("refreshToken", authEntity.RefreshToken);
             }
             else
             {
-                appSettings["refreshToken"] = authEntity.RefreshToken;
+                AppSettings["refreshToken"] = authEntity.RefreshToken;
             }
 
-            appSettings.Save();
+            AppSettings.Save();
             return true;
         }
 
@@ -72,7 +65,6 @@ namespace CrouMetro.Core.Managers
         /// <param name="account">対象のアカウント</param>
         public static async Task<bool> RefreshAccessToken(UserAccountEntity account)
         {
-            //var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             var dic = new Dictionary<String, String>();
             dic["grant_type"] = "refresh_token";
             dic["client_id"] = Constants.CONSUMER_KEY;
@@ -81,26 +73,28 @@ namespace CrouMetro.Core.Managers
 
             account.SetAccessToken("updating", null);
             account.SetRefreshTime(1000);
-            //String response;
             var theAuthClient = new HttpClient();
             HttpContent header = new FormUrlEncodedContent(dic);
-            HttpResponseMessage response = await theAuthClient.PostAsync(EndPoints.OAUTH_TOKEN, header);
-            string responseContent2 = await response.Content.ReadAsStringAsync();
-            if (response.StatusCode == HttpStatusCode.OK)
+            HttpResponseMessage response;
+            try
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                JObject o = JObject.Parse(responseContent);
-                account.SetAccessToken((String) o["access_token"], (String) o["refresh_token"]);
-                account.SetRefreshTime(long.Parse((String) o["expires_in"]));
-
-                CroudiaAuthEntity authEntity = CroudiaAuthEntity.Parse(responseContent);
-                appSettings["refreshToken"] = authEntity.RefreshToken;
-                appSettings["accessToken"] = authEntity.AccessToken;
-                appSettings.Save();
-                //Auth.SaveUserCredentials(account);
-                return true;
+                response = await theAuthClient.PostAsync(EndPoints.OAUTH_TOKEN, header);
             }
-            return false;
+            catch (WebException)
+            {
+                return false;
+            }
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            string responseContent = await response.Content.ReadAsStringAsync();
+            JObject o = JObject.Parse(responseContent);
+            account.SetAccessToken((String) o["access_token"], (String) o["refresh_token"]);
+            account.SetRefreshTime(long.Parse((String) o["expires_in"]));
+
+            CroudiaAuthEntity authEntity = CroudiaAuthEntity.Parse(responseContent);
+            AppSettings["refreshToken"] = authEntity.RefreshToken;
+            AppSettings["accessToken"] = authEntity.AccessToken;
+            AppSettings.Save();
+            return true;
         }
 
         public static async Task<bool> VerifyAccount(UserAccountEntity userAccountEntity)
@@ -109,51 +103,27 @@ namespace CrouMetro.Core.Managers
             var requestMsg = new HttpRequestMessage(new HttpMethod("GET"), EndPoints.ACCOUNT_VERIFY);
             requestMsg.Headers.Authorization = new AuthenticationHeaderValue("Bearer",
                 userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(requestMsg);
-            if (response.StatusCode == HttpStatusCode.OK)
+            HttpResponseMessage response;
+            try
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                userAccountEntity.SetUserEntity(UserEntity.Parse(responseContent, userAccountEntity));
-                SaveUserCredentials(userAccountEntity);
-                return true;
+                response = await theAuthClient.SendAsync(requestMsg);
             }
-            return false;
+            catch (WebException)
+            {
+                return false;
+            }
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            string responseContent = await response.Content.ReadAsStringAsync();
+            userAccountEntity.SetUserEntity(UserEntity.Parse(responseContent, userAccountEntity));
+            SaveUserCredentials(userAccountEntity);
+            return true;
         }
 
         public static void SaveUserCredentials(UserAccountEntity userAccountEntity)
         {
-            appSettings["refreshToken"] = userAccountEntity.GetRefreshToken();
-            appSettings["accessToken"] = userAccountEntity.GetAccessToken();
-            appSettings.Save();
-        }
-
-        public static void SaveClientToken(string responseData)
-        {
-            if ((string) appSettings["accessToken"] == null)
-            {
-                appSettings.Add("accessToken", responseData);
-            }
-            else
-            {
-                appSettings["accessToken"] = responseData;
-            }
-            appSettings.Save();
-        }
-
-        public static string GetClientToken()
-        {
-            string token = string.Empty;
-
-            try
-            {
-                token = (string) appSettings["accessToken"];
-            }
-            catch (KeyNotFoundException e)
-            {
-                token = "";
-            }
-
-            return token;
+            AppSettings["refreshToken"] = userAccountEntity.GetRefreshToken();
+            AppSettings["accessToken"] = userAccountEntity.GetAccessToken();
+            AppSettings.Save();
         }
     }
 }

@@ -15,11 +15,7 @@ namespace CrouMetro.Core.Managers
         public static async Task<bool> CreateMail(String text, long? userId, String screenName,
             UserAccountEntity userAccountEntity)
         {
-            var param = new Dictionary<String, String>();
-            param.Add("text", text);
-            param.Add("user_id", userId.ToString());
-            //if (userId !) param.Add("trim_user", trim.ToString());
-
+            var param = new Dictionary<String, String> {{"text", text}, {"user_id", userId.ToString()}};
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, EndPoints.MESSAGE_NEW);
 
@@ -33,8 +29,15 @@ namespace CrouMetro.Core.Managers
             HttpContent header = new FormUrlEncodedContent(param);
             request.Content = header;
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static async Task<List<SecretMailEntity>> GetSecretMails(long? sinceId, long? maxId, int? count,
@@ -51,9 +54,16 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return SecretMailEntity.Parse(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return SecretMailEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<SecretMailEntity>> GetSentSecretMails(long? sinceId, long? maxId, int? count,
@@ -70,9 +80,16 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return SecretMailEntity.Parse(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return SecretMailEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<HttpStatusCode> DestroyMail(long Id, UserAccountEntity userAccountEntity)
@@ -87,8 +104,15 @@ namespace CrouMetro.Core.Managers
                 accessToken = userAccountEntity.GetAccessToken();
             }
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            return response.StatusCode;
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                return response.StatusCode;
+            }
+            catch (Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
         }
 
         public static async Task<SecretMailEntity> GetMail(long postId, UserAccountEntity userAccountEntity)
@@ -98,10 +122,17 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            JObject post = JObject.Parse(responseContent);
-            return SecretMailEntity.ParseMail(post, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                JObject post = JObject.Parse(responseContent);
+                return SecretMailEntity.ParseMail(post, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace CrouMetro.Core.Entity
             }
             catch (KeyNotFoundException e)
             {
-                accessToken = "";
+                accessToken = string.Empty;
             }
             try
             {
@@ -29,7 +29,7 @@ namespace CrouMetro.Core.Entity
             }
             catch (KeyNotFoundException e)
             {
-                refreshToken = "";
+                refreshToken = string.Empty;
             }
             _data = new AccountData(accessToken, refreshToken, 3600);
             _entity = null;

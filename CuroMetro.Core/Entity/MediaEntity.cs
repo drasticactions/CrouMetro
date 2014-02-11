@@ -4,14 +4,14 @@ namespace CrouMetro.Core.Entity
 {
     public class MediaEntity
     {
-        public MediaEntity(long StatusId, String url, String Post, String type, int imageId)
+        public MediaEntity(long statusId, String url, String post, String type, int imageId)
         {
-            this.StatusId = StatusId;
+            this.StatusId = statusId;
             ImageType = type;
             LargeImageUrl = url + "?large";
             ImageUrl = url;
             ImageId = imageId;
-            this.Post = Post;
+            this.Post = post;
         }
 
         public String ImageUrl { get; set; }

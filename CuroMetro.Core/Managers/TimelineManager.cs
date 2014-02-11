@@ -19,16 +19,22 @@ namespace CrouMetro.Core.Managers
                 await Auth.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.PUBLIC_TIMELINE + "?";
-            //if (trim != null) url += "&trim_user=" + trim.ToString();
             if (sinceId != null) url += "&since_id=" + sinceId;
             if (maxId != null) url += "&max_id=" + maxId;
             if (count != null) url += "&count=" + count;
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return PostEntity.Parse(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return PostEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<PostEntity>> GetHomeTimeline(bool? trim, long? sinceId, long? maxId, int? count,
@@ -39,16 +45,22 @@ namespace CrouMetro.Core.Managers
                 await Auth.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.HOME_TIMELINE + "?";
-            //if (trim != null)  url += "&trim_user=" + trim.ToString();
             if (sinceId != null) url += "&since_id=" + sinceId;
             if (maxId != null) url += "&max_id=" + maxId;
             if (count != null) url += "&count=" + count;
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return PostEntity.Parse(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return PostEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<PostEntity>> GetMentions(bool? trim, long? sinceId, long? maxId, int? count,
@@ -68,9 +80,16 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return PostEntity.Parse(responseContent, userAccountEntity);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return PostEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<PostEntity>> GetUserTimeline(String screenname, long? userId, bool? trim,
@@ -91,10 +110,16 @@ namespace CrouMetro.Core.Managers
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
-            HttpResponseMessage response = await theAuthClient.SendAsync(request);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return PostEntity.Parse(responseContent, userAccountEntity);
-            //return Http.HttpGet(EndPoints.USER_TIMELINE, param, ref account, out content);
+            try
+            {
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return PostEntity.Parse(responseContent, userAccountEntity);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<PostEntity>> GetConversation(PostEntity startingPost,
@@ -106,17 +131,15 @@ namespace CrouMetro.Core.Managers
             }
             var conversationList = new List<PostEntity>();
             conversationList.Add(startingPost);
-            if (startingPost.InReplyToStatusID != 0)
+            if (startingPost.InReplyToStatusID == 0) return conversationList;
+            PostEntity nextEntry =
+                await StatusManager.GetPost(false, false, startingPost.InReplyToStatusID, userAccountEntity);
+            conversationList.Add(nextEntry);
+            while (nextEntry.InReplyToStatusID != 0)
             {
-                PostEntity nextEntry =
-                    await StatusManager.GetPost(false, false, startingPost.InReplyToStatusID, userAccountEntity);
+                nextEntry =
+                    await StatusManager.GetPost(false, false, nextEntry.InReplyToStatusID, userAccountEntity);
                 conversationList.Add(nextEntry);
-                while (nextEntry.InReplyToStatusID != 0)
-                {
-                    nextEntry =
-                        await StatusManager.GetPost(false, false, nextEntry.InReplyToStatusID, userAccountEntity);
-                    conversationList.Add(nextEntry);
-                }
             }
 
             return conversationList;

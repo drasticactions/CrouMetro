@@ -51,7 +51,7 @@ namespace CrouMetro.Core.Entity
         {
             var userEntities = new List<UserEntity>();
             JArray a = JArray.Parse(json);
-            foreach (JToken jToken in a)
+            foreach (var jToken in a)
             {
                 var o = (JObject) jToken;
                 var user = new UserEntity
@@ -135,7 +135,6 @@ namespace CrouMetro.Core.Entity
             String hour = times[4].Split(':')[0];
             String min = times[4].Split(':')[1];
             String sec = times[4].Split(':')[2];
-            String utf = times[5];
 
             var date = new DateTime(int.Parse(year), FixMonth(mon), int.Parse(day), int.Parse(hour), int.Parse(min),
                 int.Parse(sec), DateTimeKind.Local);

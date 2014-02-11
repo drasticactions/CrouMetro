@@ -81,9 +81,10 @@ namespace CrouMetro.Core.Entity
         {
             var entity = new List<PostEntity>();
             JArray a = JArray.Parse(json);
-            foreach (JObject o in a)
+            foreach (var jToken in a)
             {
-                var Post = new PostEntity
+                var o = (JObject) jToken;
+                var post = new PostEntity
                 {
                     CreatedAt = FixTime((String) o["created_at"]),
                     FavoritedCount = long.Parse((String) o["favorited_count"]),
@@ -125,28 +126,28 @@ namespace CrouMetro.Core.Entity
                     Media =
                         (JObject) o["entities"]["media"] == null ? null : ParseEntities((JObject) o["entities"], "type")
                 };
-                Post.Links =
-                    Post.Post.Split("\t\n ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                post.Links =
+                    post.Post.Split("\t\n ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                         .Where(s => s.StartsWith("http://") || s.StartsWith("www."));
-                Post.IsCreator = Post.User.UserID == userAccountEntity.GetUserEntity().UserID;
-                Post.CreatedDate = ToDate(Post.CreatedAt);
-                Post.IsNotCreator = !Post.IsCreator;
-                if (Post.Media != null)
+                post.IsCreator = post.User.UserID == userAccountEntity.GetUserEntity().UserID;
+                post.CreatedDate = ToDate(post.CreatedAt);
+                post.IsNotCreator = !post.IsCreator;
+                if (post.Media != null)
                 {
-                    if (Post.Media.Equals("photo"))
+                    if (post.Media.Equals("photo"))
                     {
-                        Post.HasMediaString = "画像 ";
-                        Post.HasMedia = true;
+                        post.HasMediaString = "画像 ";
+                        post.HasMedia = true;
                     }
                 }
-                if (Post.SpreadStatus != null)
+                if (post.SpreadStatus != null)
                 {
-                    Post.SpreadStatus.SpreadBy = string.Format("{0}さんがイイネ！しました。", Post.User.Name);
-                    entity.Add(Post.SpreadStatus);
+                    post.SpreadStatus.SpreadBy = string.Format("{0}さんがイイネ！しました。", post.User.Name);
+                    entity.Add(post.SpreadStatus);
                 }
                 else
                 {
-                    entity.Add(Post);
+                    entity.Add(post);
                 }
             }
 
