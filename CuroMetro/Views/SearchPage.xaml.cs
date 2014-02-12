@@ -91,9 +91,7 @@ namespace CrouMetro.Views
                 postEntity != null && postEntity.Equals(
                     voiceList.ItemsSource[voiceList.ItemsSource.Count - _offsetKnob]))
             {
-                //progressBar.Visibility = System.Windows.Visibility.Visible;
                 searchVoiceCollection.LoadSearchResults();
-                //progressBar.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -106,8 +104,7 @@ namespace CrouMetro.Views
         {
             var user = ((FrameworkElement) e.OriginalSource).DataContext as UserEntity;
             if (user == null) return;
-            App.ViewModel.SelectedUser = user;
-            NavigationService.Navigate(new Uri("/Views/UserPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/UserPage.xaml?screenName=" + user.ScreenName, UriKind.Relative));
         }
 
         private void voiceList_Tap(object sender, GestureEventArgs e)

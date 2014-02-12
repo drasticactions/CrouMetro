@@ -24,7 +24,9 @@
         <StackPanel Grid.Row="0" Margin="12,17,0,28" />
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" />
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
+        <ProgressBar Height="25" IsIndeterminate="True"/>    
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

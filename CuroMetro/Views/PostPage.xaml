@@ -27,7 +27,8 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ProgressBar VerticalAlignment="Top" Height="10" Visibility="Collapsed" x:Name="progressBar" IsIndeterminate="True" />
+            <ProgressBar VerticalAlignment="Top" Height="10" Visibility="Collapsed" x:Name="progressBar"
+                         IsIndeterminate="True" />
             <StackPanel>
                 <StackPanel x:Name="UserInformation" Tap="UserInformation_Tap" Orientation="Horizontal">
                     <Image Source="{Binding User.ProfileImage}" x:Name="UserProfileImage" />

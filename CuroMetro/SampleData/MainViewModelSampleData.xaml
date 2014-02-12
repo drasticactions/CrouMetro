@@ -6,17 +6,17 @@
 
     <viewModels:MainViewModel.Items>
         <viewModels:ItemViewModel LineOne="design one" LineTwo="Maecenas praesent accumsan bibendum"
-                          LineThree="Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur" />
+                                  LineThree="Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur" />
         <viewModels:ItemViewModel LineOne="design two" LineTwo="Dictumst eleifend facilisi faucibus"
-                          LineThree="Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent" />
+                                  LineThree="Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent" />
         <viewModels:ItemViewModel LineOne="design three" LineTwo="Habitant inceptos interdum lobortis"
-                          LineThree="Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat" />
+                                  LineThree="Accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat" />
         <viewModels:ItemViewModel LineOne="design four" LineTwo="Nascetur pharetra placerat pulvinar"
-                          LineThree="Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" />
+                                  LineThree="Pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum" />
         <viewModels:ItemViewModel LineOne="design five" LineTwo="Sagittis senectus sociosqu suscipit"
-                          LineThree="Dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis" />
+                                  LineThree="Dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur pharetra placerat pulvinar sagittis" />
         <viewModels:ItemViewModel LineOne="design six" LineTwo="Torquent ultrices vehicula volutpat"
-                          LineThree="Senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend" />
+                                  LineThree="Senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent accumsan bibendum dictumst eleifend" />
     </viewModels:MainViewModel.Items>
 
 </viewModels:MainViewModel>

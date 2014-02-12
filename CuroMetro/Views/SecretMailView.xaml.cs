@@ -41,7 +41,7 @@ namespace CrouMetro.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            BindToSecretMails();
+            await BindToSecretMails();
         }
 
         private void secretMailTimeLine_ItemRealized(object sender, ItemRealizationEventArgs e)
@@ -51,8 +51,9 @@ namespace CrouMetro.Views
             {
                 if (e.ItemKind == LongListSelectorItemKind.Item)
                 {
+                    var postEntity = e.Container.Content as PostEntity;
                     if (
-                        (e.Container.Content as PostEntity).Equals(
+                        postEntity != null && postEntity.Equals(
                             secretEmailTimeLine.ItemsSource[secretEmailTimeLine.ItemsSource.Count - _offsetKnob]))
                     {
                         secretMailCollection.LoadPosts(EndPoints.MENTIONS_TIMELINE);

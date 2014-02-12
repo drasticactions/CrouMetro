@@ -11,6 +11,8 @@ namespace CrouMetro.Core.Entity
         {
         }
 
+        public string CoverImage { private set; get; }
+
         public long CreatedAt { private set; get; }
 
         public String Description { private set; get; }
@@ -56,6 +58,7 @@ namespace CrouMetro.Core.Entity
                 var o = (JObject) jToken;
                 var user = new UserEntity
                 {
+                    CoverImage = (String)o["cover_image_url_https"] ?? string.Empty,
                     CreatedAt = (String) o["created_at"] == null ? 0 : FixTime((String) o["created_at"]),
                     Description = (String) o["description"] ?? string.Empty,
                     FavoritesCount =
@@ -96,6 +99,7 @@ namespace CrouMetro.Core.Entity
             JObject o = JObject.Parse(json);
             var user = new UserEntity
             {
+                CoverImage = (String)o["cover_image_url_https"] ?? string.Empty,
                 CreatedAt = (String) o["created_at"] == null ? 0 : FixTime((String) o["created_at"]),
                 Description = (String) o["description"] ?? string.Empty,
                 FavoritesCount = (String) o["favorites_count"] == null ? 0 : long.Parse((String) o["favorites_count"]),
@@ -118,11 +122,9 @@ namespace CrouMetro.Core.Entity
                 UserID = long.Parse((String) o["id"])
             };
             user.IsNotFollowing = !user.IsFollowing;
-            if (userAccountEntity != null && userAccountEntity.GetUserEntity() != null)
-            {
-                user.IsCurrentUser = user.UserID == userAccountEntity.GetUserEntity().UserID;
-                user.IsNotCurrentUser = !user.IsCurrentUser;
-            }
+            if (userAccountEntity == null || userAccountEntity.GetUserEntity() == null) return user;
+            user.IsCurrentUser = user.UserID == userAccountEntity.GetUserEntity().UserID;
+            user.IsNotCurrentUser = !user.IsCurrentUser;
             return user;
         }
 

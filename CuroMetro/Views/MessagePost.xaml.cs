@@ -23,8 +23,7 @@ namespace CrouMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string msg = "";
-            bool test;
+            string msg = string.Empty;
             IsSecretMail = false;
             if (NavigationContext.QueryString.TryGetValue("screenName", out msg))
                 MessageBoxUserControl.StatusUpdateBox.Text = msg;

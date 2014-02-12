@@ -22,8 +22,6 @@ namespace CrouMetro.ViewModels
 
         public PostEntity SelectedPost { get; set; }
 
-        public UserEntity SelectedUser { get; set; }
-
         /// <summary>
         ///     Sample ViewModel property; this property is used in the view to display its value using a Binding
         /// </summary>

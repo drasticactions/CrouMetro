@@ -41,16 +41,22 @@
                                         </Grid.ColumnDefinitions>
                                         <Border VerticalAlignment="Top" Grid.Column="0" Width="100" Height="100">
                                             <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
-                                               AutomationProperties.Name="{Binding Title}" />
+                                                   AutomationProperties.Name="{Binding Title}" />
                                         </Border>
 
                                         <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
                                             <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                             <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                            <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
-                                            <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
-                                            <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
-                                            <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
+                                            <TextBlock Text="{Binding SpreadBy}"
+                                                       Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                       FontSize="15" />
+                                            <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap" />
+                                            <Image Source="{Binding ImageLargeUrl}"
+                                                   Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   Height="100" Stretch="UniformToFill" />
+                                            <TextBlock Text="{Binding HasMediaString}"
+                                                       Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                       FontSize="10" Foreground="#FFF1FB22" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>

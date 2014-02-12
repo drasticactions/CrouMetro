@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+<ProgressBar x:Name="LoadingProgressBar" Height="25" VerticalAlignment="Top" IsIndeterminate="True" Visibility="Collapsed"/>
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="会話" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" />
@@ -45,8 +45,6 @@
                                 <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
                                 <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"
                                            MaxHeight="40" />
-                                <TextBlock Text="{Binding HasMedia}" FontSize="10" TextWrapping="Wrap" MaxHeight="40"
-                                           Foreground="#FFF1FB22" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

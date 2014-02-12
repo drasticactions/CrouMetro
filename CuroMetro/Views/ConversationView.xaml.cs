@@ -20,28 +20,32 @@ namespace CrouMetro.Views
             InitializeComponent();
         }
 
-        public static InfiniteScrollingCollection conversationCollection { get; set; }
+        public static InfiniteScrollingCollection ConversationCollection { get; set; }
 
         public async Task<bool> BindToConversationTimeline(UserAccountEntity userAccountEntry)
         {
-            conversationCollection = new InfiniteScrollingCollection();
-            conversationCollection.timeline = EndPoints.PUBLIC_TIMELINE;
-            conversationCollection.PostCollection = new ObservableCollection<PostEntity>();
-            conversationCollection.userAccountEntity = userAccountEntry;
+            ConversationCollection = new InfiniteScrollingCollection
+            {
+                timeline = EndPoints.PUBLIC_TIMELINE,
+                PostCollection = new ObservableCollection<PostEntity>(),
+                userAccountEntity = userAccountEntry
+            };
             List<PostEntity> items =
                 await TimelineManager.GetConversation(App.ViewModel.SelectedPost, App.userAccountEntity);
             foreach (PostEntity item in items)
             {
-                conversationCollection.PostCollection.Add(item);
+                ConversationCollection.PostCollection.Add(item);
             }
-            conversationCollection.MaxStatusId = items.Last().StatusID;
-            conversationTimeLine.DataContext = conversationCollection;
+            ConversationCollection.MaxStatusId = items.Last().StatusID;
+            conversationTimeLine.DataContext = ConversationCollection;
             return true;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            LoadingProgressBar.Visibility = Visibility.Visible;
             await BindToConversationTimeline(App.userAccountEntity);
+            LoadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void timeLine_Tap(object sender, GestureEventArgs e)

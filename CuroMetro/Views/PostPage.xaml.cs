@@ -49,8 +49,8 @@ namespace CrouMetro.Views
 
         private void UserInformationButton_Click(object sender, EventArgs e)
         {
-            App.ViewModel.SelectedUser = App.ViewModel.SelectedPost.User;
-            NavigationService.Navigate(new Uri("/Views/UserPage.xaml", UriKind.Relative));
+
+            NavigationService.Navigate(new Uri("/Views/UserPage.xaml?screenName=" + App.ViewModel.SelectedPost.User.ScreenName, UriKind.Relative));
         }
 
         private async void RemoveButton_Click(object sender, EventArgs e)
@@ -69,8 +69,7 @@ namespace CrouMetro.Views
 
         private void UserInformation_Tap(object sender, GestureEventArgs e)
         {
-            App.ViewModel.SelectedUser = App.ViewModel.SelectedPost.User;
-            NavigationService.Navigate(new Uri("/Views/UserPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/UserPage.xaml?screenName=" + App.ViewModel.SelectedPost.User.ScreenName, UriKind.Relative));
         }
     }
 }

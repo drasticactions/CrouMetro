@@ -21,11 +21,24 @@ namespace CrouMetro.Core.Managers
             {
                 await Auth.RefreshAccessToken(userAccountEntity);
             }
-            var param = new Dictionary<String, String>();
-            if (screenname != null) param.Add("screen_name", screenname);
-            if (userId != null) param.Add("user_id", userId.ToString());
+            var paramer = string.Empty;
+
+            if (screenname != null)
+            {
+                paramer += "?screen_name=" + screenname;
+            }
+            else if (userId != null)
+            {
+                paramer += "?user_id=" + userId;
+            }
+            else
+            {
+                return null;
+            }
+
             var theAuthClient = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, EndPoints.USERS_SHOW);
+            var request = new HttpRequestMessage(HttpMethod.Get, EndPoints.USERS_SHOW + paramer);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userAccountEntity.GetAccessToken());
             try
             {
                 HttpResponseMessage response = await theAuthClient.SendAsync(request);

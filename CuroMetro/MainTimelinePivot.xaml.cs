@@ -9,12 +9,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using System.Windows.Threading;
 using CrouMetro.Core.Entity;
 using CrouMetro.Core.Managers;
 using CrouMetro.Core.Tools;
 using Microsoft.Phone.Controls;
-using Microsoft.Xna.Framework.Media;
 
 namespace CrouMetro
 {
@@ -26,15 +24,6 @@ namespace CrouMetro
         public MainTimelinePivot()
         {
             InitializeComponent();
-            //var dispatcherHomeTimer = new DispatcherTimer();
-            //dispatcherHomeTimer.Tick += refreshHomeFeed;
-            //dispatcherHomeTimer.Interval = new TimeSpan(0, 1, 0);
-            //dispatcherHomeTimer.Start();
-
-            //var dispatcherPublicTimer = new DispatcherTimer();
-            //dispatcherPublicTimer.Tick += refreshPublicFeed;
-            //dispatcherPublicTimer.Interval = new TimeSpan(0, 1, 0);
-            //dispatcherPublicTimer.Start();
         }
 
         public static InfiniteScrollingCollection PublicCollection { get; set; }
@@ -227,18 +216,11 @@ namespace CrouMetro
         private void timeLine_Tap(object sender, GestureEventArgs e)
         {
             var post = ((FrameworkElement) e.OriginalSource).DataContext as PostEntity;
-            if (post != null)
-            {
-                App.ViewModel.SelectedPost = post;
-                if (post.InReplyToUserID > 0)
-                {
-                    NavigationService.Navigate(new Uri("/Views/ConversationView.xaml", UriKind.Relative));
-                }
-                else
-                {
-                    NavigationService.Navigate(new Uri("/Views/PostPage.xaml", UriKind.Relative));
-                }
-            }
+            if (post == null) return;
+            App.ViewModel.SelectedPost = post;
+            NavigationService.Navigate(post.InReplyToUserID > 0
+                ? new Uri("/Views/ConversationView.xaml", UriKind.Relative)
+                : new Uri("/Views/PostPage.xaml", UriKind.Relative));
         }
 
         private void MessageButton_Click(object sender, EventArgs e)
@@ -292,7 +274,6 @@ namespace CrouMetro
                     break;
                 case "MentionsTimeline":
                     if (MentionsCollection == null) break;
-                    post = MentionsCollection.PostCollection.FirstOrDefault();
                     List<PostEntity> mentionitems =
                         await TimelineManager.GetMentions(false, null, null, null, App.userAccountEntity);
                     mentionitems.Reverse();

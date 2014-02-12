@@ -15,12 +15,14 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <ProgressBar VerticalAlignment="Top" Height="10" Visibility="Collapsed" x:Name="progressBar" IsIndeterminate="True" />
+        <ProgressBar VerticalAlignment="Top" Height="25"  x:Name="progressBar"
+                     IsIndeterminate="True" />
         <!--Pivot Control-->
         <phone:Pivot x:Name="TimelinePivot" SelectionChanged="MainTimelinePivot_SelectionChanged" Title="クローメットロ">
             <!--Pivot item one-->
             <phone:PivotItem x:Name="PublicTimeline" Header="PublicTimeline">
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="publicTimeLine" DataContext="{Binding PublicCollection}"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="publicTimeLine"
+                                        DataContext="{Binding PublicCollection}"
                                         ItemsSource="{Binding PostCollection, Mode=TwoWay }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -34,14 +36,20 @@
                                         <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
                                                AutomationProperties.Name="{Binding Title}" />
                                     </Border>
-                                   
+
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
-                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
-                                        <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
-                                        <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
+                                        <TextBlock Text="{Binding SpreadBy}"
+                                                   Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="15" />
+                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap" />
+                                        <Image Source="{Binding ImageLargeUrl}"
+                                               Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                               Height="100" Stretch="UniformToFill" />
+                                        <TextBlock Text="{Binding HasMediaString}"
+                                                   Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="10" Foreground="#FFF1FB22" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -70,10 +78,16 @@
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
-                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
-                                        <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
-                                        <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
+                                        <TextBlock Text="{Binding SpreadBy}"
+                                                   Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="15" />
+                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap" />
+                                        <Image Source="{Binding ImageLargeUrl}"
+                                               Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                               Height="100" Stretch="UniformToFill" />
+                                        <TextBlock Text="{Binding HasMediaString}"
+                                                   Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="10" Foreground="#FFF1FB22" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -83,7 +97,8 @@
             </phone:PivotItem>
 
             <phone:PivotItem Header="＠返信">
-                <phone:LongListSelector Tap="timeLine_Tap" x:Name="MentionsTimeLine" DataContext="{Binding MentionsCollection}"
+                <phone:LongListSelector Tap="timeLine_Tap" x:Name="MentionsTimeLine"
+                                        DataContext="{Binding MentionsCollection}"
                                         ItemsSource="{Binding PostCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
@@ -101,10 +116,16 @@
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{Binding SpreadBy}" Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="15" />
-                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap"/>
-                                        <Image Source="{Binding ImageLargeUrl}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" Height="100" Stretch="UniformToFill"/>
-                                        <TextBlock Text="{Binding HasMediaString}" Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="10" Foreground="#FFF1FB22" />
+                                        <TextBlock Text="{Binding SpreadBy}"
+                                                   Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="15" />
+                                        <TextBlock Text="{Binding CreatedDate}" FontSize="10" TextWrapping="Wrap" />
+                                        <Image Source="{Binding ImageLargeUrl}"
+                                               Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                               Height="100" Stretch="UniformToFill" />
+                                        <TextBlock Text="{Binding HasMediaString}"
+                                                   Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="10" Foreground="#FFF1FB22" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -114,7 +135,8 @@
             </phone:PivotItem>
 
             <phone:PivotItem Header="アルバム">
-                <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90" DataContext="{Binding PictureCollection}"
+                <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90"
+                                        DataContext="{Binding PictureCollection}"
                                         x:Name="albumGallery" ItemsSource="{Binding MediaCollection }"
                                         Margin="0,0,-22,0">
                     <phone:LongListSelector.ItemTemplate>
