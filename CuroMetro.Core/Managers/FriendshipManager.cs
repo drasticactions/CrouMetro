@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -42,7 +41,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

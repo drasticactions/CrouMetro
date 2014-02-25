@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CrouMetro.Core.Entity;
 using CrouMetro.Core.Tools;
@@ -19,9 +18,9 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
-            var paramer = string.Empty;
+            string paramer = string.Empty;
 
             if (screenname != null)
             {
@@ -56,7 +55,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             var param = new Dictionary<String, String>();
             if (!string.IsNullOrEmpty(name)) param.Add("name", name);
@@ -91,7 +90,7 @@ namespace CrouMetro.Core.Managers
                 {
                     if (userAccountEntity.GetAccessToken().Equals("refresh"))
                     {
-                        await Auth.RefreshAccessToken(userAccountEntity);
+                        await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                     }
                 }
                 if (userAccountEntity != null)
@@ -128,7 +127,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string paramer = "?cursor=" + cursor + "&user_id=" + userId;
             var theAuthClient = new HttpClient();
@@ -140,7 +139,7 @@ namespace CrouMetro.Core.Managers
                 string responseContent = await response.Content.ReadAsStringAsync();
                 responseContent = "[" + responseContent + "]";
                 JArray a = JArray.Parse(responseContent);
-                var b = (JObject)a[0];
+                var b = (JObject) a[0];
                 return UserEntity.ParseUserList(b["users"].ToString(), userAccountEntity);
             }
             catch (Exception)
@@ -154,7 +153,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string paramer = "?cursor=" + cursor + "&user_id=" + userId;
             var theAuthClient = new HttpClient();
@@ -168,7 +167,7 @@ namespace CrouMetro.Core.Managers
 
                 responseContent = "[" + responseContent + "]";
                 JArray a = JArray.Parse(responseContent);
-                var b = (JObject)a[0];
+                var b = (JObject) a[0];
                 return UserEntity.ParseUserList(b["users"].ToString(), userAccountEntity);
             }
             catch (Exception)

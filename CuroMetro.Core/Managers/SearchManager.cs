@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -17,9 +16,9 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
-            var paramer = "?q=" + query;
+            string paramer = "?q=" + query;
             if (count.HasValue)
             {
                 paramer += "&count=" + count.Value;
@@ -52,7 +51,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string paramer = "?q=" + query;
             if (MaxId.HasValue)
@@ -85,7 +84,7 @@ namespace CrouMetro.Core.Managers
                 string responseContent = await response.Content.ReadAsStringAsync();
                 responseContent = "[" + responseContent + "]";
                 JArray a = JArray.Parse(responseContent);
-                var b = (JObject)a[0];
+                var b = (JObject) a[0];
                 if (b["statuses"] == null || b["search_metadata"] == null) return null;
                 return SearchEntity.ParseStatuses(b["statuses"].ToString(), b["search_metadata"].ToString(),
                     userAccountEntity);

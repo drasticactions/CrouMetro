@@ -15,7 +15,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <ProgressBar VerticalAlignment="Top" Height="25"  x:Name="progressBar"
+        <ProgressBar VerticalAlignment="Top" x:Name="progressBar"
                      IsIndeterminate="True" />
         <!--Pivot Control-->
         <phone:Pivot x:Name="TimelinePivot" SelectionChanged="MainTimelinePivot_SelectionChanged" Title="クローメットロ">

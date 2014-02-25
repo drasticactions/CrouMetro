@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CrouMetro.Core.Managers
 {
-    public class Auth
+    public class AuthenticationManager
     {
         private static readonly IsolatedStorageSettings AppSettings = IsolatedStorageSettings.ApplicationSettings;
 

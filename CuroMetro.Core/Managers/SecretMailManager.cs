@@ -22,7 +22,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
 
@@ -45,7 +45,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.MESSAGE_MAILS + "?";
             if (sinceId != null) url += "&since_id=" + sinceId;
@@ -71,7 +71,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.MESSAGE_SENT + "?";
             if (sinceId != null) url += "&since_id=" + sinceId;
@@ -100,7 +100,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

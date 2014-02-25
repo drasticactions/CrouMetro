@@ -41,9 +41,9 @@ namespace CrouMetro.Views
                 // Acquire the code from Query String
                 IEnumerable<KeyValuePair<string, string>> pairs = queryString.ParseQueryString();
                 code = pairs.GetValue("code");
-                await Auth.RequestAccessToken(code);
+                await AuthenticationManager.RequestAccessToken(code);
                 var userAccountEntity = new UserAccountEntity();
-                await Auth.VerifyAccount(userAccountEntity);
+                await AuthenticationManager.VerifyAccount(userAccountEntity);
                 App.userAccountEntity = userAccountEntity;
                 // Back to MainPage
                 var rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;

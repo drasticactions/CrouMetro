@@ -21,13 +21,13 @@ namespace CrouMetro
             base.OnNavigatedTo(e);
             string authCode;
             /*
-             * If we're coming from IE with our Auth Code, parse it out and get the Access Token.
+             * If we're coming from IE with our AuthenticationManager Code, parse it out and get the Access Token.
              * Else check if we already have it.
              * */
             if (NavigationContext.QueryString.TryGetValue("code", out authCode))
             {
                 App.userAccountEntity = new UserAccountEntity();
-                await Auth.RequestAccessToken(authCode);
+                await AuthenticationManager.RequestAccessToken(authCode);
                 LoginTest();
             }
             else
@@ -40,10 +40,10 @@ namespace CrouMetro
         {
             //bool LoginTest = await CroudiaAuthManager.RefreshAccessToken();
             App.userAccountEntity = new UserAccountEntity();
-            bool LoginTest = await Auth.RefreshAccessToken(App.userAccountEntity);
+            bool LoginTest = await AuthenticationManager.RefreshAccessToken(App.userAccountEntity);
             if (LoginTest)
             {
-                await Auth.VerifyAccount(App.userAccountEntity);
+                await AuthenticationManager.VerifyAccount(App.userAccountEntity);
                 NavigationService.Navigate(new Uri("/MainTimelinePivot.xaml", UriKind.Relative));
             }
             else

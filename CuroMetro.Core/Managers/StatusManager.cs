@@ -28,7 +28,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
 
@@ -55,7 +55,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -99,7 +99,7 @@ namespace CrouMetro.Core.Managers
                 {
                     if (account.GetAccessToken().Equals("refresh"))
                     {
-                        await Auth.RefreshAccessToken(account);
+                        await AuthenticationManager.RefreshAccessToken(account);
                     }
                 }
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.GetAccessToken());
@@ -107,14 +107,14 @@ namespace CrouMetro.Core.Managers
                 Stream stream = new MemoryStream(fileStream);
                 var t = new StreamContent(stream);
                 const string fileName = "test.jpg";
-                var extension = Path.GetExtension(path);
+                string extension = Path.GetExtension(path);
                 if (extension != null && extension.Equals(".png"))
                 {
                     t.Headers.ContentType = new MediaTypeHeaderValue("image/png");
                 }
                 else
                 {
-                    var s = Path.GetExtension(path);
+                    string s = Path.GetExtension(path);
                     if (s != null && (s.Equals(".jpg") || s.Equals(".jpeg")))
                     {
                         t.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");

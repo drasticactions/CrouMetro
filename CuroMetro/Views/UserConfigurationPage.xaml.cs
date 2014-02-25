@@ -38,7 +38,7 @@ namespace CrouMetro.Views
                 }
                 bool result2 = await UserManager.ChangeUserProfileImage("test.jpg", byteArray, App.userAccountEntity);
             }
-            await Auth.VerifyAccount(App.userAccountEntity);
+            await AuthenticationManager.VerifyAccount(App.userAccountEntity);
             NavigationService.Navigate(new Uri("/MainTimelinePivot.xaml", UriKind.Relative));
         }
 

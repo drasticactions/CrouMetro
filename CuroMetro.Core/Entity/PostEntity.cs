@@ -143,6 +143,7 @@ namespace CrouMetro.Core.Entity
                 if (post.SpreadStatus != null)
                 {
                     post.SpreadStatus.SpreadBy = string.Format("{0}さんがイイネ！しました。", post.User.Name);
+                    post.SpreadStatus.IsSpreaded = true;
                     entity.Add(post.SpreadStatus);
                 }
                 else

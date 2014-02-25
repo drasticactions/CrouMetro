@@ -42,6 +42,7 @@ namespace CrouMetro
             };
             List<PostEntity> items =
                 await TimelineManager.GetPublicTimeline(false, null, null, null, App.userAccountEntity);
+            if (items == null) return false;
             foreach (PostEntity item in items)
             {
                 PublicCollection.PostCollection.Add(item);
@@ -63,6 +64,7 @@ namespace CrouMetro
             };
             List<PostEntity> items =
                 await TimelineManager.GetHomeTimeline(false, null, null, null, App.userAccountEntity);
+            if (items == null) return false;
             foreach (PostEntity item in items)
             {
                 HomeCollection.PostCollection.Add(item);
@@ -82,6 +84,7 @@ namespace CrouMetro
                 userAccountEntity = userAccountEntry
             };
             List<PostEntity> items = await TimelineManager.GetMentions(false, null, null, null, App.userAccountEntity);
+            if (items == null) return false;
             foreach (PostEntity item in items)
             {
                 MentionsCollection.PostCollection.Add(item);
@@ -104,6 +107,7 @@ namespace CrouMetro
             };
             List<MediaEntity> items =
                 await AlbumManager.GetAlbumList(0, userAccountEntity.GetUserEntity().ScreenName, userAccountEntity);
+            if (items == null) return false;
             foreach (MediaEntity item in items)
             {
                 PictureCollection.MediaCollection.Add(item);

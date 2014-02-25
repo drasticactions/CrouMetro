@@ -94,7 +94,7 @@
     <Compile Include="Entity\UserAccountEntity.cs" />
     <Compile Include="Entity\UserEntity.cs" />
     <Compile Include="Managers\AlbumManager.cs" />
-    <Compile Include="Managers\AuthManager.cs" />
+    <Compile Include="Managers\AuthenticationManager.cs" />
     <Compile Include="Managers\FavoriteManager.cs" />
     <Compile Include="Managers\FriendshipManager.cs" />
     <Compile Include="Managers\SearchManager.cs" />

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using CrouMetro.Core.Entity;
 using CrouMetro.Core.Tools;
@@ -18,7 +14,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             var theAuthClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, string.Format(EndPoints.TrendsPlace, woeId));

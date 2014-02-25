@@ -16,7 +16,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.PUBLIC_TIMELINE + "?";
             if (sinceId != null) url += "&since_id=" + sinceId;
@@ -42,7 +42,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.HOME_TIMELINE + "?";
             if (sinceId != null) url += "&since_id=" + sinceId;
@@ -68,7 +68,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
 
             string url = EndPoints.MENTIONS_TIMELINE + "?";
@@ -97,7 +97,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             string url = EndPoints.USER_TIMELINE + "?";
             if (screenname != null) url += "&screen_name=" + screenname;
@@ -127,7 +127,7 @@ namespace CrouMetro.Core.Managers
         {
             if (userAccountEntity.GetAccessToken().Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
             }
             var conversationList = new List<PostEntity>();
             conversationList.Add(startingPost);

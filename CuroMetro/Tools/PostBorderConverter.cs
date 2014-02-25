@@ -12,7 +12,7 @@ namespace Croumetro.Tools
         {
             var item = value as PostEntity;
             if (item == null) return null;
-            if (item.SpreadStatus != null)
+            if (item.IsSpreaded)
             {
                 return new SolidColorBrush(Colors.Red);
             }

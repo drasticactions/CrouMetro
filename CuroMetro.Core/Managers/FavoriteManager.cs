@@ -1,11 +1,11 @@
-﻿using CrouMetro.Core.Entity;
-using CrouMetro.Core.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CrouMetro.Core.Entity;
+using CrouMetro.Core.Tools;
 
 namespace CrouMetro.Core.Managers
 {
@@ -21,7 +21,7 @@ namespace CrouMetro.Core.Managers
             string accessToken = userAccountEntity.GetAccessToken();
             if (accessToken.Equals("refresh"))
             {
-                await Auth.RefreshAccessToken(userAccountEntity);
+                await AuthenticationManager.RefreshAccessToken(userAccountEntity);
                 accessToken = userAccountEntity.GetAccessToken();
             }
 
