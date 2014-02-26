@@ -102,6 +102,7 @@
     <Compile Include="Tools\AssociationUriMapper.cs" />
     <Compile Include="Tools\BooleanToVisibilityConverter.cs" />
     <Compile Include="Tools\PostBorderConverter.cs" />
+    <Compile Include="Tools\ScreennameConverter.cs" />
     <Compile Include="UserControls\MessageBoxUserControl.xaml.cs">
       <DependentUpon>MessageBoxUserControl.xaml</DependentUpon>
     </Compile>

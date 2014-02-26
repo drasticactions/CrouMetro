@@ -38,8 +38,12 @@
                                     </Border>
 
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding User.Name}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                            <TextBlock Text="{Binding User.ScreenName, Converter={StaticResource ScreennameConverter}}" Margin="5,5,0,0" FontSize="15" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{Binding SourceName}" FontSize="15" TextWrapping="NoWrap" />
                                         <TextBlock Text="{Binding SpreadBy}"
                                                    Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    FontSize="15" />
@@ -76,8 +80,12 @@
                                     </Border>
 
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding User.Name}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                            <TextBlock Text="{Binding User.ScreenName, Converter={StaticResource ScreennameConverter}}" Margin="5,5,0,0" FontSize="15" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{Binding SourceName}" FontSize="15" TextWrapping="NoWrap" />
                                         <TextBlock Text="{Binding SpreadBy}"
                                                    Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    FontSize="15" />
@@ -114,8 +122,12 @@
                                     </Border>
 
                                     <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding User.Name}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                            <TextBlock Text="{Binding User.ScreenName, Converter={StaticResource ScreennameConverter}}" Margin="5,5,0,0" FontSize="15" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{Binding SourceName}" FontSize="15" TextWrapping="NoWrap" />
                                         <TextBlock Text="{Binding SpreadBy}"
                                                    Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    FontSize="15" />

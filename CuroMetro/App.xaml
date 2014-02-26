@@ -19,6 +19,7 @@
         </Style>
         <tools:PostBorderConverter x:Key="PostBorderConverter" />
         <tools:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <tools:ScreennameConverter x:Key="ScreennameConverter" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
