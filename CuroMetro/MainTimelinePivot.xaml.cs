@@ -255,24 +255,32 @@ namespace CrouMetro
                 case "PublicTimeline":
                     if (PublicCollection == null) break;
                     post = PublicCollection.PostCollection.FirstOrDefault();
-                    List<PostEntity> items =
-                        await TimelineManager.GetPublicTimeline(false, post.StatusID, null, null, App.userAccountEntity);
-                    items.Reverse();
-                    foreach (PostEntity item in items)
+                    if (post != null)
                     {
-                        PublicCollection.PostCollection.Insert(0, item);
+                        List<PostEntity> items =
+                            await TimelineManager.GetPublicTimeline(false, post.StatusID, null, null, App.userAccountEntity);
+                        if (items == null) break;
+                        items.Reverse();
+                        foreach (PostEntity item in items)
+                        {
+                            PublicCollection.PostCollection.Insert(0, item);
+                        }
                     }
                     publicTimeLine.ScrollTo(PublicCollection.PostCollection.FirstOrDefault());
                     break;
                 case "HomeTimeline":
                     if (HomeCollection == null) break;
                     post = HomeCollection.PostCollection.FirstOrDefault();
-                    List<PostEntity> homeitems =
-                        await TimelineManager.GetHomeTimeline(false, post.StatusID, null, null, App.userAccountEntity);
-                    homeitems.Reverse();
-                    foreach (PostEntity item in homeitems)
+                    if (post != null)
                     {
-                        HomeCollection.PostCollection.Insert(0, item);
+                        List<PostEntity> homeitems =
+                            await TimelineManager.GetHomeTimeline(false, post.StatusID, null, null, App.userAccountEntity);
+                        if (homeitems == null) break;
+                        homeitems.Reverse();
+                        foreach (PostEntity item in homeitems)
+                        {
+                            HomeCollection.PostCollection.Insert(0, item);
+                        }
                     }
                     homeTimeLine.ScrollTo(HomeCollection.PostCollection.FirstOrDefault());
                     break;
@@ -280,6 +288,7 @@ namespace CrouMetro
                     if (MentionsCollection == null) break;
                     List<PostEntity> mentionitems =
                         await TimelineManager.GetMentions(false, null, null, null, App.userAccountEntity);
+                    if (mentionitems == null) break;
                     mentionitems.Reverse();
                     foreach (PostEntity item in mentionitems)
                     {

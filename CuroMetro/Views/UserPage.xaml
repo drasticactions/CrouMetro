@@ -78,7 +78,7 @@
                                                AutomationProperties.Name="{Binding Title}" />
                                     </Border>
 
-                                    <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                                    <StackPanel x:Name="PostStackPanel" Grid.Column="1">
                                         <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
                                         <TextBlock Text="{Binding User.Name}" FontSize="15" TextWrapping="NoWrap" />
                                         <TextBlock Text="{Binding SpreadBy}"
@@ -101,7 +101,7 @@
 
             <phone:PivotItem Header="フォロー">
                 <phone:LongListSelector GridCellSize="90,90" x:Name="followerList"
-                                        ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                                        ItemsSource="{Binding UserCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="6">
@@ -124,7 +124,7 @@
 
             <phone:PivotItem Header="フォロワー">
                 <phone:LongListSelector GridCellSize="90,90" x:Name="followingList"
-                                        ItemsSource="{Binding UserCollection }" Margin="0,0,-22,0">
+                                        ItemsSource="{Binding UserCollection }">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="6">
@@ -148,7 +148,7 @@
             <phone:PivotItem Header="アルバム">
                 <phone:LongListSelector Tap="albumGallery_Tap" LayoutMode="Grid" GridCellSize="90,90"
                                         x:Name="albumGallery" ItemsSource="{Binding MediaCollection }"
-                                        Margin="0,0,-22,0">
+                                        >
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <Image x:Name="albumImage" Source="{Binding ImageUrl}" />
