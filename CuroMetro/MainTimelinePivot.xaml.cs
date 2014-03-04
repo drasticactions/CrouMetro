@@ -31,7 +31,7 @@ namespace CrouMetro
         public static InfiniteScrollingCollection MentionsCollection { get; set; }
         public static InfiniteScrollingHtmlParseImageCollection PictureCollection { get; set; }
 
-        public async Task<bool> BindToPublicTimeline(UserAccountEntity userAccountEntry)
+        public async void BindToPublicTimeline(UserAccountEntity userAccountEntry)
         {
             progressBar.Visibility = Visibility.Visible;
             PublicCollection = new InfiniteScrollingCollection
@@ -42,7 +42,7 @@ namespace CrouMetro
             };
             List<PostEntity> items =
                 await TimelineManager.GetPublicTimeline(false, null, null, null, App.userAccountEntity);
-            if (items == null) return false;
+            if (items == null) return;
             foreach (PostEntity item in items)
             {
                 PublicCollection.PostCollection.Add(item);
@@ -51,10 +51,9 @@ namespace CrouMetro
             publicTimeLine.DataContext = PublicCollection;
             publicTimeLine.ItemRealized += publicTimeLine_ItemRealized;
             progressBar.Visibility = Visibility.Collapsed;
-            return true;
         }
 
-        public async Task<bool> BindToHomeTimeline(UserAccountEntity userAccountEntry)
+        public async void BindToHomeTimeline(UserAccountEntity userAccountEntry)
         {
             HomeCollection = new InfiniteScrollingCollection
             {
@@ -64,7 +63,7 @@ namespace CrouMetro
             };
             List<PostEntity> items =
                 await TimelineManager.GetHomeTimeline(false, null, null, null, App.userAccountEntity);
-            if (items == null) return false;
+            if (items == null) return;
             foreach (PostEntity item in items)
             {
                 HomeCollection.PostCollection.Add(item);
@@ -72,10 +71,9 @@ namespace CrouMetro
             HomeCollection.MaxStatusId = items.Last().StatusID;
             homeTimeLine.DataContext = HomeCollection;
             homeTimeLine.ItemRealized += homeTimeLine_ItemRealized;
-            return true;
         }
 
-        public async Task<bool> BindToMentionsTimeline(UserAccountEntity userAccountEntry)
+        public async void BindToMentionsTimeline(UserAccountEntity userAccountEntry)
         {
             MentionsCollection = new InfiniteScrollingCollection
             {
@@ -84,7 +82,7 @@ namespace CrouMetro
                 userAccountEntity = userAccountEntry
             };
             List<PostEntity> items = await TimelineManager.GetMentions(false, null, null, null, App.userAccountEntity);
-            if (items == null) return false;
+            if (items == null) return;
             foreach (PostEntity item in items)
             {
                 MentionsCollection.PostCollection.Add(item);
@@ -92,10 +90,9 @@ namespace CrouMetro
             MentionsCollection.MaxStatusId = items.Last().StatusID;
             MentionsTimeLine.DataContext = MentionsCollection;
             MentionsTimeLine.ItemRealized += mentionsTimeLine_ItemRealized;
-            return true;
         }
 
-        public async Task<bool> BindPictureGallery(UserAccountEntity userAccountEntity)
+        public async void BindPictureGallery(UserAccountEntity userAccountEntity)
         {
             PictureCollection = new InfiniteScrollingHtmlParseImageCollection
             {
@@ -107,7 +104,7 @@ namespace CrouMetro
             };
             List<MediaEntity> items =
                 await AlbumManager.GetAlbumList(0, userAccountEntity.GetUserEntity().ScreenName, userAccountEntity);
-            if (items == null) return false;
+            if (items == null) return;
             foreach (MediaEntity item in items)
             {
                 PictureCollection.MediaCollection.Add(item);
@@ -115,7 +112,6 @@ namespace CrouMetro
             PictureCollection.Offset = 20;
             albumGallery.DataContext = PictureCollection;
             albumGallery.ItemRealized += albumGallery_ItemRealized;
-            return true;
         }
 
         // Load data for the ViewModel Items
@@ -125,7 +121,7 @@ namespace CrouMetro
             NavigationService.RemoveBackEntry();
             if (PublicCollection == null)
             {
-                await BindToPublicTimeline(App.userAccountEntity);
+                BindToPublicTimeline(App.userAccountEntity);
             }
             else
             {
@@ -315,21 +311,21 @@ namespace CrouMetro
                     _selectedIndex = "HomeTimeline";
                     if (HomeCollection == null)
                     {
-                        await BindToHomeTimeline(App.userAccountEntity);
+                        BindToHomeTimeline(App.userAccountEntity);
                     }
                     break;
                 case 2:
                     _selectedIndex = "MentionsTimeline";
                     if (MentionsCollection == null)
                     {
-                        await BindToMentionsTimeline(App.userAccountEntity);
+                        BindToMentionsTimeline(App.userAccountEntity);
                     }
                     break;
                 case 3:
                     _selectedIndex = "Album";
                     if (PictureCollection == null)
                     {
-                        await BindPictureGallery(App.userAccountEntity);
+                        BindPictureGallery(App.userAccountEntity);
                     }
                     break;
             }

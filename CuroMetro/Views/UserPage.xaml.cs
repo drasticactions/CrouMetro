@@ -57,10 +57,10 @@ namespace CrouMetro.Views
                     ? "@" + _selectedUser.ScreenName + "をフォローしています"
                     : "@" + _selectedUser.ScreenName + "をフォローしていません";
             }
-            await BindToUserTimeline(App.userAccountEntity);
-            await BindToUserFollowerGallery(App.userAccountEntity);
-            await BindToUserFollowingGallery(App.userAccountEntity);
-            await BindPictureGallery(App.userAccountEntity);
+             BindToUserTimeline(App.userAccountEntity);
+             BindToUserFollowerGallery(App.userAccountEntity);
+             BindToUserFollowingGallery(App.userAccountEntity);
+             BindPictureGallery(App.userAccountEntity);
             LoadingProgressBar.Visibility = Visibility.Collapsed;
 
         }
@@ -78,7 +78,7 @@ namespace CrouMetro.Views
                                          selectedUser.IsFollowing;
         }
 
-        public async Task<bool> BindToUserTimeline(UserAccountEntity userAccountEntry)
+        public async void BindToUserTimeline(UserAccountEntity userAccountEntry)
         {
             UserCollection = new InfiniteScrollingCollection
             {
@@ -92,6 +92,7 @@ namespace CrouMetro.Views
                 await
                     TimelineManager.GetUserTimeline(_selectedUser.ScreenName,
                         _selectedUser.UserID, null, null, null, null, App.userAccountEntity);
+            if (items == null) return;
             foreach (PostEntity item in items)
             {
                 UserCollection.PostCollection.Add(item);
@@ -99,10 +100,9 @@ namespace CrouMetro.Views
             UserCollection.MaxStatusId = items.Last().StatusID;
             userTimeLine.DataContext = UserCollection;
             userTimeLine.ItemRealized += userTimeLine_ItemRealized;
-            return true;
         }
 
-        public async Task<bool> BindPictureGallery(UserAccountEntity userAccountEntity)
+        public async void BindPictureGallery(UserAccountEntity userAccountEntity)
         {
             PictureCollection = new InfiniteScrollingHtmlParseImageCollection
             {
@@ -114,6 +114,7 @@ namespace CrouMetro.Views
             };
             List<MediaEntity> items =
                 await AlbumManager.GetAlbumList(0, _selectedUser.ScreenName, userAccountEntity);
+            if (items == null) return;
             foreach (MediaEntity item in items)
             {
                 PictureCollection.MediaCollection.Add(item);
@@ -121,10 +122,9 @@ namespace CrouMetro.Views
             PictureCollection.Offset = 20;
             albumGallery.DataContext = PictureCollection;
             albumGallery.ItemRealized += albumGallery_ItemRealized;
-            return true;
         }
 
-        public async Task<bool> BindToUserFollowerGallery(UserAccountEntity userAccountEntity)
+        public async void BindToUserFollowerGallery(UserAccountEntity userAccountEntity)
         {
             UserFollowerCollection = new InfiniteScrollingUserCollection
             {
@@ -136,6 +136,7 @@ namespace CrouMetro.Views
             };
             List<UserEntity> items =
                 await UserManager.LookupFollowerUsers(0, _selectedUser.UserID, userAccountEntity);
+            if (items == null) return;
             foreach (UserEntity item in items)
             {
                 UserFollowerCollection.UserCollection.Add(item);
@@ -143,10 +144,9 @@ namespace CrouMetro.Views
             UserFollowerCollection.Offset = 0;
             followerList.DataContext = UserFollowerCollection;
             followerList.ItemRealized += followerTimeline_ItemRealized;
-            return true;
         }
 
-        public async Task<bool> BindToUserFollowingGallery(UserAccountEntity userAccountEntity)
+        public async void BindToUserFollowingGallery(UserAccountEntity userAccountEntity)
         {
             UserFollowingCollection = new InfiniteScrollingUserCollection
             {
@@ -158,6 +158,7 @@ namespace CrouMetro.Views
             };
             List<UserEntity> items =
                 await UserManager.LookupFollowingUsers(0, _selectedUser.UserID, userAccountEntity);
+            if (items == null) return;
             foreach (UserEntity item in items)
             {
                 UserFollowingCollection.UserCollection.Add(item);
@@ -165,7 +166,6 @@ namespace CrouMetro.Views
             UserFollowingCollection.Offset = 0;
             followingList.DataContext = UserFollowingCollection;
             followingList.ItemRealized += followingTimeline_ItemRealized;
-            return true;
         }
 
         private void albumGallery_ItemRealized(object sender, ItemRealizationEventArgs e)
