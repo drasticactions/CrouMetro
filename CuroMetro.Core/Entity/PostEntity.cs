@@ -15,7 +15,7 @@ namespace CrouMetro.Core.Entity
 
         public long CreatedAt { private set; get; }
 
-        public String CreatedDate { private set; get; }
+        public DateTime CreatedDate { private set; get; }
 
         public Boolean IsFavorited { private set; get; }
 
@@ -258,12 +258,12 @@ namespace CrouMetro.Core.Entity
             }
         }
 
-        private static String ToDate(long unix)
+        private static DateTime ToDate(long unix)
         {
             TimeZoneInfo ti = TimeZoneInfo.Local;
             DateTime time =
                 TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unix), ti);
-            return time.ToString("yyyy/MM/dd HH:mm:ss");
+            return time;
         }
 
         public PostEntity Clone()

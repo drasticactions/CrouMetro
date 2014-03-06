@@ -11,6 +11,7 @@ using CrouMetro.Core.Managers;
 using CrouMetro.Core.Tools;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace CrouMetro.Views
 {

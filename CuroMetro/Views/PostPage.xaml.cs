@@ -4,6 +4,7 @@ using CrouMetro.Core.Entity;
 using CrouMetro.Core.Managers;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace CrouMetro.Views
 {

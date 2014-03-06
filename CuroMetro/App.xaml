@@ -6,7 +6,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:crouMetro="clr-namespace:CrouMetro"
-    xmlns:tools="clr-namespace:Croumetro.Tools">
+    xmlns:tools="clr-namespace:Croumetro.Tools"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
 
     <!--Application Resources-->
     <Application.Resources>
@@ -20,6 +21,41 @@
         <tools:PostBorderConverter x:Key="PostBorderConverter" />
         <tools:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <tools:ScreennameConverter x:Key="ScreennameConverter" />
+        <toolkit:RelativeTimeConverter x:Key="RelativeTimeConverter" />
+        
+        <DataTemplate x:Key="TimelineDataTemplate">
+                <Border Background="{Binding Converter={StaticResource PostBorderConverter}}">
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border VerticalAlignment="Top" Grid.Column="0" Width="100" Height="100">
+                            <Image Source="{Binding User.ProfileImage}" Stretch="UniformToFill"
+                                               AutomationProperties.Name="{Binding Title}" />
+                        </Border>
+
+                        <StackPanel x:Name="PostStackPanel" Grid.Column="1" Margin="10,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding User.Name}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                                <TextBlock Text="{Binding User.ScreenName, Converter={StaticResource ScreennameConverter}}" Margin="5,5,0,0" FontSize="15" TextWrapping="NoWrap" TextTrimming="WordEllipsis"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Post}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding SourceName}" FontSize="15" TextWrapping="NoWrap" />
+                            <TextBlock Text="{Binding SpreadBy}"
+                                                   Visibility="{Binding IsSpreaded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="15" />
+                            <TextBlock Text="{Binding CreatedDate, Converter={StaticResource RelativeTimeConverter}}" FontSize="10" TextWrapping="Wrap" />
+                            <Image Source="{Binding ImageLargeUrl}"
+                                               Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                               Height="100" Stretch="UniformToFill" />
+                            <TextBlock Text="{Binding HasMediaString}"
+                                                   Visibility="{Binding HasMedia, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   FontSize="10" Foreground="#FFF1FB22" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+        </DataTemplate>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

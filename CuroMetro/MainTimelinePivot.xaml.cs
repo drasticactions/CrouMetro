@@ -13,6 +13,7 @@ using CrouMetro.Core.Entity;
 using CrouMetro.Core.Managers;
 using CrouMetro.Core.Tools;
 using Microsoft.Phone.Controls;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace CrouMetro
 {
